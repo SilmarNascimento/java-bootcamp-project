@@ -15,12 +15,17 @@ public class BlogPost {
   @Id
   @GeneratedValue(generator = "UUID")
   private UUID id;
+  @Column(name = "author_id")
+  private UUID authorId;
   private String title;
+  private String description;
   private String content;
-  @Column(name = "user_id")
-  private UUID userId;
+  private String image255;
+  private String image825;
+  private String image1800;
   @OneToMany
   private List<Category> categories;
+  private List<Comment> comments;
   @CreationTimestamp
   private LocalDateTime publishedAt;
   @UpdateTimestamp
