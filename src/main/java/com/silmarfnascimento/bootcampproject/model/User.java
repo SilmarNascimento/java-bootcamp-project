@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-@Entity
+@Entity(name = "tb_users")
 public class User {
   @Id
   @GeneratedValue(generator = "UUID")

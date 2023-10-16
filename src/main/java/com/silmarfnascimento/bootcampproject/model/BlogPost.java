@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Entity
+@Entity(name = "tb_blog_posts")
 public class BlogPost {
   @Id
   @GeneratedValue(generator = "UUID")
