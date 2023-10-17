@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Data
 @Service
@@ -26,20 +27,20 @@ public class LoginService implements ILoginService {
   private IUserRepository userRepository;
 
   public ServiceResponse login(Login login){
-    User userFound = userRepository.findByUsername(login.username());
-    if(userFound != null) {
-      var passwordVerify = BCrypt.verifyer().verify(login.password().toCharArray(), userFound.getPassword());
+    Optional<User> userFound = userRepository.findByUsername(login.username());
+    if(userFound.isPresent()) {
+      var passwordVerify = BCrypt.verifyer().verify(login.password().toCharArray(), userFound.get().getPassword());
       if (!passwordVerify.verified) {
         return new ServiceResponse("UNAUTHORIZED", "Senha ou login inválidos");
       }
 
       JWTObject jwtObject = new JWTObject();
-      jwtObject.setUsername(userFound.getUsername());
-      jwtObject.setPassword(userFound.getPassword());
+      jwtObject.setUsername(userFound.get().getUsername());
+      jwtObject.setPassword(userFound.get().getPassword());
       jwtObject.setCreatedAt(new Date(System.currentTimeMillis()));
       jwtObject.setExpiresAt((new Date(System.currentTimeMillis() + SecurityConfiguration.EXPIRATION)));
 
-      Session session = new Session(userFound.getUsername(), JWTCreator.create(SecurityConfiguration.PREFIX, SecurityConfiguration.KEY, jwtObject));
+      Session session = new Session(userFound.get().getUsername(), JWTCreator.create(SecurityConfiguration.PREFIX, SecurityConfiguration.KEY, jwtObject));
 
       return new ServiceResponse("OK", session);
     }else {
