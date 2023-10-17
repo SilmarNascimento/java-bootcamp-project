@@ -1,4 +1,4 @@
-package com.silmarfnascimento.bootcampproject.service.Implementation;
+package com.silmarfnascimento.bootcampproject.service;
 
 import lombok.Data;
 
