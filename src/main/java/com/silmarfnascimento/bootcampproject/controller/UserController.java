@@ -3,10 +3,10 @@ package com.silmarfnascimento.bootcampproject.controller;
 import com.silmarfnascimento.bootcampproject.model.User;
 import com.silmarfnascimento.bootcampproject.service.IUserService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> registerUser(@RequestBody @Validated User user) {
+  public ResponseEntity<Object> registerUser(@RequestBody @Valid User user) {
     ServiceResponse serviceResponse = userService.create(user);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }

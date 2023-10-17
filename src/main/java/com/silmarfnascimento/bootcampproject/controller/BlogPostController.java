@@ -3,10 +3,10 @@ package com.silmarfnascimento.bootcampproject.controller;
 import com.silmarfnascimento.bootcampproject.model.BlogPost;
 import com.silmarfnascimento.bootcampproject.service.IBlogPostService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class BlogPostController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> createBlogPost(@RequestBody @Validated BlogPost post) {
+  public ResponseEntity<Object> createBlogPost(@RequestBody @Valid BlogPost post) {
     ServiceResponse serviceResponse = blogPostService.create(post);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }

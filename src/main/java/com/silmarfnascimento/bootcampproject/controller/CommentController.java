@@ -4,10 +4,10 @@ package com.silmarfnascimento.bootcampproject.controller;
 import com.silmarfnascimento.bootcampproject.model.Comment;
 import com.silmarfnascimento.bootcampproject.service.ICommentService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -36,7 +36,7 @@ public class CommentController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> createComment(@RequestBody @Validated Comment comment) {
+  public ResponseEntity<Object> createComment(@RequestBody @Valid Comment comment) {
     ServiceResponse serviceResponse = commentService.create(comment);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
