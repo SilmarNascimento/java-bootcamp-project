@@ -9,6 +9,8 @@ public interface ICommentService {
 
   ServiceResponse findById(UUID id);
 
+  ServiceResponse findByBlogPostId(UUID id);
+
   ServiceResponse create(Comment comment);
 
   ServiceResponse update(UUID id, Comment comment);

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
-@Data
 @Service
 public class LoginService implements ILoginService {
   @Autowired

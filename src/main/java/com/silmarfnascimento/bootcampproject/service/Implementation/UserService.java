@@ -7,11 +7,13 @@ import com.silmarfnascimento.bootcampproject.service.IUserService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import com.silmarfnascimento.bootcampproject.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class UserService implements IUserService {
   @Autowired
   private IUserRepository userRepository;
@@ -55,7 +57,7 @@ public class UserService implements IUserService {
     }
 
     Utils.copyNonNullProperties(user, userFound.get());
-    User updatedUser = userRepository.save(user);
+    User updatedUser = userRepository.save(userFound.get());
     return new ServiceResponse("OK", updatedUser);
   }
 
