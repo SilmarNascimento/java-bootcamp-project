@@ -21,8 +21,8 @@ public class CommentController {
   private CommentService commentService;
 
   @GetMapping
-  public ResponseEntity<Object> findAllComments() {
-    ServiceResponse serviceResponse = commentService.findAll();
+  public ResponseEntity<Object> findAllCommentsByBlogPostId(@PathVariable UUID blogpostId) {
+    ServiceResponse serviceResponse = commentService.findAllByBlogPostId(blogpostId);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
 

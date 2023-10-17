@@ -5,11 +5,9 @@ import com.silmarfnascimento.bootcampproject.model.Comment;
 import java.util.UUID;
 
 public interface ICommentService {
-  ServiceResponse findAll();
+  ServiceResponse findAllByBlogPostId(UUID id);
 
   ServiceResponse findById(UUID id);
-
-  ServiceResponse findByBlogPostId(UUID id);
 
   ServiceResponse create(Comment comment);
 

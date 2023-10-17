@@ -21,8 +21,8 @@ public class CommentService implements ICommentService {
   private ICommentRepository commentRepository;
 
   @Override
-  public ServiceResponse findAll() {
-    List<Comment> comments = commentRepository.findAll();
+  public ServiceResponse findAllByBlogPostId(UUID postId) {
+    List<Comment> comments = commentRepository.findByBlogPostId(postId);
     return new ServiceResponse("OK", comments);
   }
 
@@ -33,12 +33,6 @@ public class CommentService implements ICommentService {
       return new ServiceResponse("NOT_FOUND", "Usuário não encontrado");
     }
     return new ServiceResponse("OK", comment);
-  }
-
-  @Override
-  public ServiceResponse findByBlogPostId(UUID postId) {
-    List<Comment> comments = commentRepository.findByBlogPostId(postId);
-    return new ServiceResponse("OK", comments);
   }
 
   @Override
