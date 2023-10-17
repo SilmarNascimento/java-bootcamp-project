@@ -18,17 +18,17 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 @RequestMapping("/blogpost/{blogpostId}/comment")
 public class CommentController {
   @Autowired
-  private ICommentService userService;
+  private ICommentService commentService;
 
   @GetMapping
   public ResponseEntity<Object> findAllComments() {
-    ServiceResponse serviceResponse = userService.findAll();
+    ServiceResponse serviceResponse = commentService.findAll();
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<Object> findCommentById(UUID id) {
-    ServiceResponse serviceResponse = userService.findById(id);
+    ServiceResponse serviceResponse = commentService.findById(id);
     if(serviceResponse.getData() != null) {
       return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
     }
@@ -37,19 +37,19 @@ public class CommentController {
 
   @PostMapping
   public ResponseEntity<Object> createComment(@RequestBody @Validated Comment comment) {
-    ServiceResponse serviceResponse = userService.create(comment);
+    ServiceResponse serviceResponse = commentService.create(comment);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Object> updateComment(@PathVariable UUID id, @RequestBody Comment comment) {
-    ServiceResponse serviceResponse = userService.update(id, comment);
+    ServiceResponse serviceResponse = commentService.update(id, comment);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteComment(@PathVariable UUID id) {
-    userService.delete(id);
+    commentService.delete(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }
