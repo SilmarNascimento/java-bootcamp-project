@@ -28,7 +28,7 @@ public class UserService implements IUserService {
   public ServiceResponse findById(UUID id) {
     Optional<User> user = userRepository.findById(id);
     if(user.isEmpty()) {
-      return new ServiceResponse("NOT_FOUND", "Usuário não encontrado");
+      return new ServiceResponse("NOT_FOUND", "User not Found");
     }
     return new ServiceResponse("OK", user);
   }
@@ -37,7 +37,7 @@ public class UserService implements IUserService {
   public ServiceResponse create(User user) {
     Optional<User> userFound = this.userRepository.findByUsername(user.getUsername());
     if (userFound.isPresent()) {
-      return new ServiceResponse("BAD_REQUEST", "Usuário já existente!");
+      return new ServiceResponse("BAD_REQUEST", "User already exists!");
     }
     hashUserPassword(user);
     User createdUser = userRepository.save(user);
@@ -48,7 +48,7 @@ public class UserService implements IUserService {
   public ServiceResponse update(UUID id, User user) {
     Optional<User> userFound = userRepository.findById(id);
     if (userFound.isEmpty()) {
-      return new ServiceResponse("NOT_FOUND", "Client not Found");
+      return new ServiceResponse("NOT_FOUND", "User not Found");
     }
 
     var passwordVerify = BCrypt.verifyer().verify(user.getPassword().toCharArray(), userFound.get().getPassword());

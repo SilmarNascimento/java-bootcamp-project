@@ -3,6 +3,7 @@ package com.silmarfnascimento.bootcampproject.controller;
 import com.silmarfnascimento.bootcampproject.model.BlogPost;
 import com.silmarfnascimento.bootcampproject.service.Implementation.BlogPostService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,14 +36,16 @@ public class BlogPostController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> createBlogPost(@RequestBody @Valid BlogPost post) {
-    ServiceResponse serviceResponse = blogPostService.create(post);
+  public ResponseEntity<Object> createBlogPost(HttpServletRequest request, @RequestBody @Valid BlogPost post) {
+    UUID authorId = (UUID) request.getAttribute("idUser");
+    ServiceResponse serviceResponse = blogPostService.create(authorId, post);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Object> updateBlogPost(@PathVariable UUID id, @RequestBody BlogPost post) {
-    ServiceResponse serviceResponse = blogPostService.update(id, post);
+  public ResponseEntity<Object> updateBlogPost(HttpServletRequest request, @PathVariable UUID id, @RequestBody BlogPost post) {
+    UUID authorId = (UUID) request.getAttribute("idUser");
+    ServiceResponse serviceResponse = blogPostService.update(id, authorId, post);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
 

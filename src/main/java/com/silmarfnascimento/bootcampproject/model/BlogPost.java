@@ -25,6 +25,7 @@ public class BlogPost {
   private String image1800;
   @OneToMany
   private List<Category> categories;
+  @OneToMany
   private List<Comment> comments;
   @CreationTimestamp
   private LocalDateTime publishedAt;

@@ -30,7 +30,7 @@ public class CategoryService implements ICategoryService {
   public ServiceResponse findById(UUID id) {
     Optional<Category> category = categoryRepository.findById(id);
     if(category.isEmpty()) {
-      return new ServiceResponse("NOT_FOUND", "Usuário não encontrado");
+      return new ServiceResponse("NOT_FOUND", "Category not found");
     }
     return new ServiceResponse("OK", category);
   }
@@ -39,7 +39,7 @@ public class CategoryService implements ICategoryService {
   public ServiceResponse create(Category category) {
     Optional<Category> categoryFound = this.categoryRepository.findByCategory(category.getCategory());
     if (categoryFound.isPresent()) {
-      return new ServiceResponse("BAD_REQUEST", "Categoria já existente!");
+      return new ServiceResponse("BAD_REQUEST", "Category already exists!");
     }
     Category createdCategory = categoryRepository.save(category);
     return new ServiceResponse("CREATED", createdCategory);
@@ -49,7 +49,7 @@ public class CategoryService implements ICategoryService {
   public ServiceResponse update(UUID id, Category category) {
     Optional<Category> categoryFound = categoryRepository.findById(id);
     if (categoryFound.isEmpty()) {
-      return new ServiceResponse("NOT_FOUND", "Client not Found");
+      return new ServiceResponse("NOT_FOUND", "Category not found");
     }
     Category updatedCategory = categoryFound.get();
     updatedCategory.setCategory(category.getCategory());

@@ -31,7 +31,7 @@ public class LoginService implements ILoginService {
       User user = userFound.get();
       var passwordVerify = BCrypt.verifyer().verify(login.password().toCharArray(), user.getPassword());
       if (!passwordVerify.verified) {
-        return new ServiceResponse("UNAUTHORIZED", "Senha ou login inválidos");
+        return new ServiceResponse("UNAUTHORIZED", "Invalid login or password");
       }
 
       JWTObject jwtObject = new JWTObject();

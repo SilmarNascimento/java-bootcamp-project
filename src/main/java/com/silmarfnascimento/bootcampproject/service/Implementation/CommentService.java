@@ -30,7 +30,7 @@ public class CommentService implements ICommentService {
   public ServiceResponse findById(UUID id) {
     Optional<Comment> comment = commentRepository.findById(id);
     if(comment.isEmpty()) {
-      return new ServiceResponse("NOT_FOUND", "Usuário não encontrado");
+      return new ServiceResponse("NOT_FOUND", "Comment not Found");
     }
     return new ServiceResponse("OK", comment);
   }

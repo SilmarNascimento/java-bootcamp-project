@@ -9,9 +9,9 @@ public interface IBlogPostService {
 
   ServiceResponse findById(UUID id);
 
-  ServiceResponse create(BlogPost post);
+  ServiceResponse create(UUID authorId, BlogPost post);
 
-  ServiceResponse update(UUID id, BlogPost post);
+  ServiceResponse update(UUID id,UUID authorId, BlogPost post);
 
   void delete(UUID id);
 }
