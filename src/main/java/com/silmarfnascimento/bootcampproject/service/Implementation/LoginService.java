@@ -10,7 +10,6 @@ import com.silmarfnascimento.bootcampproject.security.JWTObject;
 import com.silmarfnascimento.bootcampproject.security.SecurityConfiguration;
 import com.silmarfnascimento.bootcampproject.service.ILoginService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,6 @@ import java.util.Optional;
 
 @Service
 public class LoginService implements ILoginService {
-  @Autowired
-  private SecurityConfiguration securityConfig;
-
   @Autowired
   private IUserRepository userRepository;
 

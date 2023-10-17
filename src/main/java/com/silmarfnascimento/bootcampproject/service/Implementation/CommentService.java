@@ -1,10 +1,7 @@
 package com.silmarfnascimento.bootcampproject.service.Implementation;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.silmarfnascimento.bootcampproject.model.Comment;
-import com.silmarfnascimento.bootcampproject.model.User;
 import com.silmarfnascimento.bootcampproject.repository.ICommentRepository;
-import com.silmarfnascimento.bootcampproject.repository.IUserRepository;
 import com.silmarfnascimento.bootcampproject.service.ICommentService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import com.silmarfnascimento.bootcampproject.utils.Utils;
@@ -59,12 +56,6 @@ public class CommentService implements ICommentService {
   @Override
   public void delete(UUID id) {
     commentRepository.deleteById(id);
-  }
-
-  private static void hashUserPassword(User user) {
-    String passwordHashed = BCrypt.withDefaults()
-        .hashToString(12, user.getPassword().toCharArray());
-    user.setPassword(passwordHashed);
   }
 }
 

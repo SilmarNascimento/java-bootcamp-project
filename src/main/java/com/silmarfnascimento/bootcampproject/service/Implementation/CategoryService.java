@@ -1,13 +1,9 @@
 package com.silmarfnascimento.bootcampproject.service.Implementation;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.silmarfnascimento.bootcampproject.model.Category;
-import com.silmarfnascimento.bootcampproject.model.User;
 import com.silmarfnascimento.bootcampproject.repository.ICategoryRepository;
-import com.silmarfnascimento.bootcampproject.repository.IUserRepository;
 import com.silmarfnascimento.bootcampproject.service.ICategoryService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
-import com.silmarfnascimento.bootcampproject.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

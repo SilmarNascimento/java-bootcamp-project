@@ -1,10 +1,7 @@
 package com.silmarfnascimento.bootcampproject.service.Implementation;
 
 import com.silmarfnascimento.bootcampproject.model.BlogPost;
-import com.silmarfnascimento.bootcampproject.model.Category;
-import com.silmarfnascimento.bootcampproject.model.Comment;
 import com.silmarfnascimento.bootcampproject.repository.IBlogPostRepository;
-import com.silmarfnascimento.bootcampproject.repository.IUserRepository;
 import com.silmarfnascimento.bootcampproject.service.IBlogPostService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import com.silmarfnascimento.bootcampproject.utils.Utils;
@@ -20,8 +17,6 @@ import java.util.UUID;
 public class BlogPostService implements IBlogPostService {
   @Autowired
   private IBlogPostRepository blogPostRepository;
-  @Autowired
-  private IUserRepository userRepository;
 
   @Override
   public ServiceResponse findAll() {
@@ -41,8 +36,8 @@ public class BlogPostService implements IBlogPostService {
   @Override
   public ServiceResponse create(UUID authorId, BlogPost post) {
     post.setAuthorId(authorId);
-    post.setCategories(new ArrayList<Category>());
-    post.setComments(new ArrayList<Comment>());
+    post.setCategories(new ArrayList<>());
+    post.setComments(new ArrayList<>());
     post.setImage255(post.getImage255() != null && !post.getImage255().isEmpty() ? post.getImage255() : "");
     post.setImage825(post.getImage825() != null && !post.getImage825().isEmpty() ? post.getImage825() : "");
     post.setImage1800(post.getImage255() != null && !post.getImage1800().isEmpty() ? post.getImage1800() : "");
