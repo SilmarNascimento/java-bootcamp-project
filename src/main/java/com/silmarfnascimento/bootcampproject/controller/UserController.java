@@ -1,7 +1,7 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
 import com.silmarfnascimento.bootcampproject.model.User;
-import com.silmarfnascimento.bootcampproject.service.IUserService;
+import com.silmarfnascimento.bootcampproject.service.Implementation.UserService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 @RequestMapping("/users")
 public class UserController {
   @Autowired
-  private IUserService userService;
+  private UserService userService;
 
   @GetMapping
   public ResponseEntity<Object> findAllUsers() {

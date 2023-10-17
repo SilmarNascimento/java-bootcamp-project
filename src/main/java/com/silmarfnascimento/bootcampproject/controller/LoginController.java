@@ -1,7 +1,7 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
 import com.silmarfnascimento.bootcampproject.dto.Login;
-import com.silmarfnascimento.bootcampproject.service.ILoginService;
+import com.silmarfnascimento.bootcampproject.service.Implementation.LoginService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 @RequestMapping("/auth")
 public class LoginController {
   @Autowired
-  private ILoginService loginService;
+  private LoginService loginService;
 
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody @Valid Login login){

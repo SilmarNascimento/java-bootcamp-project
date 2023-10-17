@@ -2,7 +2,7 @@ package com.silmarfnascimento.bootcampproject.controller;
 
 
 import com.silmarfnascimento.bootcampproject.model.Comment;
-import com.silmarfnascimento.bootcampproject.service.ICommentService;
+import com.silmarfnascimento.bootcampproject.service.Implementation.CommentService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 @RequestMapping("/blogpost/{blogpostId}/comment")
 public class CommentController {
   @Autowired
-  private ICommentService commentService;
+  private CommentService commentService;
 
   @GetMapping
   public ResponseEntity<Object> findAllComments() {

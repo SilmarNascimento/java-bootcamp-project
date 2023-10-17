@@ -1,7 +1,7 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
 import com.silmarfnascimento.bootcampproject.model.Category;
-import com.silmarfnascimento.bootcampproject.service.ICategoryService;
+import com.silmarfnascimento.bootcampproject.service.Implementation.CategoryService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 @RequestMapping("/category")
 public class CategoryController {
   @Autowired
-  private ICategoryService categoryService;
+  private CategoryService categoryService;
 
   @GetMapping
   public ResponseEntity<Object> findAllCategories() {

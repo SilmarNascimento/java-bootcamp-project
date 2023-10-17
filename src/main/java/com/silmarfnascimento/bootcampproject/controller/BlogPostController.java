@@ -1,7 +1,7 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
 import com.silmarfnascimento.bootcampproject.model.BlogPost;
-import com.silmarfnascimento.bootcampproject.service.IBlogPostService;
+import com.silmarfnascimento.bootcampproject.service.Implementation.BlogPostService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 @RequestMapping("/blogpost")
 public class BlogPostController {
   @Autowired
-  private IBlogPostService blogPostService;
+  private BlogPostService blogPostService;
 
   @GetMapping
   public ResponseEntity<Object> findAllBlogPosts() {
