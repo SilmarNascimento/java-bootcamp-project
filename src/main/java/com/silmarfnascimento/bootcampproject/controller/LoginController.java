@@ -21,7 +21,6 @@ public class LoginController {
 
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody @Valid Login login){
-    System.out.println(login.toString());
     ServiceResponse serviceResponse = loginService.login(login);
     if(serviceResponse.getData() != null) {
       return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());

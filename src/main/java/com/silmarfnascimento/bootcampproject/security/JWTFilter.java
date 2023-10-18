@@ -50,10 +50,12 @@ public class JWTFilter extends OncePerRequestFilter {
           }
 
           response.sendError(403, "usuário não autorizado");
+          return;
         }else {
           response.sendError(403, "Usuário não encontrado");
+          return;
         }
-        filterChain.doFilter(request, response);
+        // filterChain.doFilter(request, response);
       }catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException e) {
         System.out.println("Error processing JWT: " + e.getMessage());
         response.setStatus(HttpStatus.FORBIDDEN.value());

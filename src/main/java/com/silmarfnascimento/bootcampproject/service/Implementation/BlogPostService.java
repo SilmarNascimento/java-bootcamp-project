@@ -27,7 +27,7 @@ public class BlogPostService implements IBlogPostService {
   @Override
   public ServiceResponse findById(UUID id) {
     Optional<BlogPost> post = blogPostRepository.findById(id);
-    if(post.isEmpty()) {
+    if(post.isEmpty()|| post.get().getAuthorId() == null) {
       return new ServiceResponse("NOT_FOUND", "Post not found");
     }
     return new ServiceResponse("OK", post);
@@ -50,11 +50,7 @@ public class BlogPostService implements IBlogPostService {
 
   @Override
   public ServiceResponse update(UUID id, UUID authorId, BlogPost post) {
-    System.out.println(id);
-    System.out.println(authorId);
-    System.out.println(post.toString());
     Optional<BlogPost> postFound = blogPostRepository.findById(id);
-    System.out.println(postFound.get().toString());
     if(postFound.isEmpty() || postFound.get().getAuthorId() == null) {
       return new ServiceResponse("NOT_FOUND", "Post not Found");
     }
