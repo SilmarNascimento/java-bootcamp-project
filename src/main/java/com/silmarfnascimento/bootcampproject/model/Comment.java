@@ -1,8 +1,7 @@
 package com.silmarfnascimento.bootcampproject.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,7 +16,10 @@ public class Comment {
   @GeneratedValue(generator = "UUID")
   private UUID id;
   private UUID authorId;
-  private UUID blogPostId;
+  @ManyToOne
+  @JoinColumn(name = "blog_post_id")
+  @JsonIgnore
+  private BlogPost blogPost;
   private String content;
   @CreationTimestamp
   private LocalDateTime publishedAt;

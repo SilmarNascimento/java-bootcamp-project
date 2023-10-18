@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Entity(name = "tb_blog_posts")
+@Entity
+@Table(name = "BLOGPOST")
 public class BlogPost {
   @Id
   @GeneratedValue(generator = "UUID")
@@ -25,7 +26,7 @@ public class BlogPost {
   private String image1800;
   @OneToMany
   private List<Category> categories;
-  @OneToMany
+  @OneToMany(mappedBy = "blogPost", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;
   @CreationTimestamp
   private LocalDateTime publishedAt;

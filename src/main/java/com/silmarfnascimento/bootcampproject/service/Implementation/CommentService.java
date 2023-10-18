@@ -1,6 +1,7 @@
 package com.silmarfnascimento.bootcampproject.service.Implementation;
 
 import com.silmarfnascimento.bootcampproject.model.Comment;
+import com.silmarfnascimento.bootcampproject.repository.IBlogPostRepository;
 import com.silmarfnascimento.bootcampproject.repository.ICommentRepository;
 import com.silmarfnascimento.bootcampproject.service.ICommentService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
@@ -16,6 +17,9 @@ import java.util.UUID;
 public class CommentService implements ICommentService {
   @Autowired
   private ICommentRepository commentRepository;
+
+  @Autowired
+  private IBlogPostRepository blogPostRepository;
 
   @Override
   public ServiceResponse findAllByBlogPostId(UUID postId) {
@@ -33,7 +37,9 @@ public class CommentService implements ICommentService {
   }
 
   @Override
-  public ServiceResponse create(Comment comment) {
+  public ServiceResponse create(UUID authorId, UUID blogPostId, Comment comment) {
+    comment.setAuthorId(authorId);
+    comment.setBlogPost(blogPostRepository.findById(blogPostId).orElse(null));
     Comment createdComment = commentRepository.save(comment);
     return new ServiceResponse("CREATED", createdComment);
   }
@@ -55,7 +61,12 @@ public class CommentService implements ICommentService {
 
   @Override
   public void delete(UUID id) {
-    commentRepository.deleteById(id);
+    Optional<Comment> commentFound = commentRepository.findById(id);
+    if (commentFound.isPresent()) {
+      commentFound.get().setBlogPost(null);
+      commentRepository.save(commentFound.get()); // Update the database
+      commentRepository.deleteById(id);
+    }
   }
 }
 

@@ -4,6 +4,7 @@ package com.silmarfnascimento.bootcampproject.controller;
 import com.silmarfnascimento.bootcampproject.model.Comment;
 import com.silmarfnascimento.bootcampproject.service.Implementation.CommentService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,8 +37,9 @@ public class CommentController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> createComment(@RequestBody @Valid Comment comment) {
-    ServiceResponse serviceResponse = commentService.create(comment);
+  public ResponseEntity<Object> createComment(HttpServletRequest request,@PathVariable UUID blogpostId, @RequestBody @Valid Comment comment) {
+    UUID authorId = (UUID) request.getAttribute("idUser");
+    ServiceResponse serviceResponse = commentService.create(authorId, blogpostId, comment);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
   }
 
