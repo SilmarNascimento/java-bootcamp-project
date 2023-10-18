@@ -13,5 +13,5 @@ public interface IBlogPostService {
 
   ServiceResponse update(UUID id,UUID authorId, BlogPost post);
 
-  void delete(UUID id);
+  ServiceResponse delete(UUID id);
 }

@@ -1,8 +1,7 @@
 package com.silmarfnascimento.bootcampproject.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;
@@ -14,4 +13,8 @@ public class Category {
   @GeneratedValue(generator = "UUID")
   private UUID id;
   private String category;
+  @ManyToOne
+  @JoinColumn(name = "blog_post_id")
+  @JsonIgnore
+  private BlogPost blogPost;
 }

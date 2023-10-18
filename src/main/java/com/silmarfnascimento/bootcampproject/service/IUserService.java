@@ -13,5 +13,5 @@ public interface IUserService {
 
   ServiceResponse update(UUID id, User user);
 
-  void delete(UUID id);
+  ServiceResponse delete(UUID id);
 }

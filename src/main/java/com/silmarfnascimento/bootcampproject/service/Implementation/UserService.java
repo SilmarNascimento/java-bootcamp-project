@@ -62,8 +62,13 @@ public class UserService implements IUserService {
   }
 
   @Override
-  public void delete(UUID id) {
-    userRepository.deleteById(id);
+  public ServiceResponse delete(UUID id) {
+    Optional<User> userFound = userRepository.findById(id);
+    if (userFound.isPresent()) {
+      userRepository.deleteById(id);
+      return new ServiceResponse("NO_CONTENT", "User deleted");
+    }
+    return new ServiceResponse("NOT_FOUND", "User not Found");
   }
 
   private static void hashUserPassword(User user) {

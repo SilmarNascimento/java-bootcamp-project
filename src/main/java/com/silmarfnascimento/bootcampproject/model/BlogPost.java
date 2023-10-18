@@ -24,7 +24,7 @@ public class BlogPost {
   private String image255;
   private String image825;
   private String image1800;
-  @OneToMany
+  @OneToMany(mappedBy = "blogPost", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Category> categories;
   @OneToMany(mappedBy = "blogPost", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;

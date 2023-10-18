@@ -53,7 +53,12 @@ public class CategoryService implements ICategoryService {
   }
 
   @Override
-  public void delete(UUID id) {
-    categoryRepository.deleteById(id);
+  public ServiceResponse delete(UUID id) {
+    Optional<Category> categoryFound = categoryRepository.findById(id);
+    if(categoryFound.isPresent()) {
+      categoryRepository.deleteById(id);
+      return new ServiceResponse("NOT_CONTENT", "Category deleted");
+    }
+    return new ServiceResponse("NOT_FOUND", "Category not found");
   }
 }

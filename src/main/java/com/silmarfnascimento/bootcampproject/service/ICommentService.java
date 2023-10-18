@@ -13,5 +13,5 @@ public interface ICommentService {
 
   ServiceResponse update(UUID id, Comment comment);
 
-  void delete(UUID id);
+  ServiceResponse delete(UUID id);
 }

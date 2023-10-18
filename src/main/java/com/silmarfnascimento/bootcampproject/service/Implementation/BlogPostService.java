@@ -63,7 +63,12 @@ public class BlogPostService implements IBlogPostService {
   }
 
   @Override
-  public void delete(UUID id) {
-    blogPostRepository.deleteById(id);
+  public ServiceResponse delete(UUID id) {
+    Optional<BlogPost> postFound = blogPostRepository.findById(id);
+    if(postFound.isPresent()) {
+      blogPostRepository.deleteById(id);
+      return new ServiceResponse("NO_CONTENT", "Post deleted");
+    }
+    return new ServiceResponse("NOT_FOUND", "Post not Found");
   }
 }

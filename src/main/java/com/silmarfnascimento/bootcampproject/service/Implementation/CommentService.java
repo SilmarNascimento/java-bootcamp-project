@@ -60,13 +60,15 @@ public class CommentService implements ICommentService {
   }
 
   @Override
-  public void delete(UUID id) {
+  public ServiceResponse delete(UUID id) {
     Optional<Comment> commentFound = commentRepository.findById(id);
     if (commentFound.isPresent()) {
       commentFound.get().setBlogPost(null);
       commentRepository.save(commentFound.get()); // Update the database
       commentRepository.deleteById(id);
+      return new ServiceResponse("NO_CONTENT", "Comment deleted");
     }
+    return new ServiceResponse("NOT_FOUND", "Comment not Found");
   }
 }
 
