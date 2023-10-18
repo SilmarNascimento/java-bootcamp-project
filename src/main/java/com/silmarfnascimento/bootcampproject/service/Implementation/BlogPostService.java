@@ -40,7 +40,7 @@ public class BlogPostService implements IBlogPostService {
     post.setComments(new ArrayList<>());
     post.setImage255(post.getImage255() != null && !post.getImage255().isEmpty() ? post.getImage255() : "");
     post.setImage825(post.getImage825() != null && !post.getImage825().isEmpty() ? post.getImage825() : "");
-    post.setImage1800(post.getImage255() != null && !post.getImage1800().isEmpty() ? post.getImage1800() : "");
+    post.setImage1800(post.getImage1800() != null && !post.getImage1800().isEmpty() ? post.getImage1800() : "");
     if(post.getDescription() == null || post.getContent() == null || post.getTitle() == null) {
       return new ServiceResponse("BAD_REQUEST", "There is missing information");
     }
@@ -50,15 +50,16 @@ public class BlogPostService implements IBlogPostService {
 
   @Override
   public ServiceResponse update(UUID id, UUID authorId, BlogPost post) {
+    System.out.println(id);
+    System.out.println(authorId);
+    System.out.println(post.toString());
     Optional<BlogPost> postFound = blogPostRepository.findById(id);
-    if(postFound.isEmpty()) {
+    System.out.println(postFound.get().toString());
+    if(postFound.isEmpty() || postFound.get().getAuthorId() == null) {
       return new ServiceResponse("NOT_FOUND", "Post not Found");
     }
-    if(postFound.get().getAuthorId() != authorId) {
+    if(!postFound.get().getAuthorId().equals(authorId)) {
       return new ServiceResponse("FORBIDDEN", "Post doesn't belong to this user");
-    }
-    if(post.getDescription() == null || post.getContent() == null || post.getTitle() == null) {
-      return new ServiceResponse("BAD_REQUEST", "There is missing information");
     }
     Utils.copyNonNullProperties(post, postFound.get());
     BlogPost updatedPost = blogPostRepository.save(postFound.get());

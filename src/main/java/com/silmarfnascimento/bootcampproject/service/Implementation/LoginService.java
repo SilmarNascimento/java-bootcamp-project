@@ -23,6 +23,7 @@ public class LoginService implements ILoginService {
 
   public ServiceResponse login(Login login){
     Optional<User> userFound = userRepository.findByUsername(login.username());
+    System.out.println(userFound.toString());
     if(userFound.isPresent()) {
       User user = userFound.get();
       var passwordVerify = BCrypt.verifyer().verify(login.password().toCharArray(), user.getPassword());
