@@ -50,8 +50,9 @@ public class BlogPostController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteCategory(@PathVariable UUID id) {
-    blogPostService.delete(id);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  public ResponseEntity<Object> deleteCategory(@PathVariable UUID id) {
+    ServiceResponse serviceResponse = blogPostService.delete(id);
+    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
+
   }
 }

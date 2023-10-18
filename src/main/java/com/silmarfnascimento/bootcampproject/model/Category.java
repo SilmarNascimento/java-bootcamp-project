@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -13,8 +14,7 @@ public class Category {
   @GeneratedValue(generator = "UUID")
   private UUID id;
   private String category;
-  @ManyToOne
-  @JoinColumn(name = "blog_post_id")
+  @ManyToMany(mappedBy = "categories")
   @JsonIgnore
-  private BlogPost blogPost;
+  private List<BlogPost> blogPosts;
 }

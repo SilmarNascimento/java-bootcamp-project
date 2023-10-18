@@ -24,7 +24,8 @@ public class BlogPost {
   private String image255;
   private String image825;
   private String image1800;
-  @OneToMany(mappedBy = "blogPost", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @ManyToMany
+  @JoinTable(name = "post_category", joinColumns = @JoinColumn(name = "blog_post_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
   private List<Category> categories;
   @OneToMany(mappedBy = "blogPost", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;

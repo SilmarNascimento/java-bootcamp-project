@@ -7,6 +7,7 @@ import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +38,7 @@ public class CategoryService implements ICategoryService {
     if (categoryFound.isPresent()) {
       return new ServiceResponse("BAD_REQUEST", "Category already exists!");
     }
+    category.setBlogPosts(new ArrayList<>());
     Category createdCategory = categoryRepository.save(category);
     return new ServiceResponse("CREATED", createdCategory);
   }
@@ -57,7 +59,7 @@ public class CategoryService implements ICategoryService {
     Optional<Category> categoryFound = categoryRepository.findById(id);
     if(categoryFound.isPresent()) {
       categoryRepository.deleteById(id);
-      return new ServiceResponse("NOT_CONTENT", "Category deleted");
+      return new ServiceResponse("NO_CONTENT", "Category deleted");
     }
     return new ServiceResponse("NOT_FOUND", "Category not found");
   }
