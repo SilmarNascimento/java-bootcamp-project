@@ -75,7 +75,6 @@ public class BlogPostService implements IBlogPostService {
 
   @Override
   public ServiceResponse addCategories(UUID id, UUID authorId, List<String> categoriesName) {
-    System.out.println("CATEGORIES: " + categoriesName.toString());
     Optional<BlogPost> postFound = blogPostRepository.findById(id);
     if(postFound.isEmpty() || postFound.get().getAuthorId() == null) {
       return new ServiceResponse("NOT_FOUND", "Post not Found");
@@ -84,14 +83,11 @@ public class BlogPostService implements IBlogPostService {
       return new ServiceResponse("FORBIDDEN", "Post doesn't belong to this user");
     }
     List<Category> allCategories = categoryRepository.findAll();
-    System.out.println(allCategories.toString());
     List<Category> newCategoryList = new ArrayList<>();
-    System.out.println(newCategoryList.toString());
     for(String categoryName: categoriesName) {
       Category categoryFound = allCategories.stream().filter(cat -> cat.getCategory().equals(categoryName)).findAny().orElse(null);
       newCategoryList.add(categoryFound);
     }
-    System.out.println(newCategoryList.toString());
     postFound.get().setCategories(newCategoryList);
     return new ServiceResponse("OK", blogPostRepository.save(postFound.get()));
   }
