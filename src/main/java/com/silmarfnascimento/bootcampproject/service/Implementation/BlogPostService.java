@@ -1,22 +1,23 @@
 package com.silmarfnascimento.bootcampproject.service.Implementation;
 
 import com.silmarfnascimento.bootcampproject.model.BlogPost;
+import com.silmarfnascimento.bootcampproject.model.Category;
 import com.silmarfnascimento.bootcampproject.repository.IBlogPostRepository;
+import com.silmarfnascimento.bootcampproject.repository.ICategoryRepository;
 import com.silmarfnascimento.bootcampproject.service.IBlogPostService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import com.silmarfnascimento.bootcampproject.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BlogPostService implements IBlogPostService {
   @Autowired
   private IBlogPostRepository blogPostRepository;
+  @Autowired
+  private ICategoryRepository categoryRepository;
 
   @Override
   public ServiceResponse findAll() {
@@ -70,5 +71,28 @@ public class BlogPostService implements IBlogPostService {
       return new ServiceResponse("NO_CONTENT", "Post deleted");
     }
     return new ServiceResponse("NOT_FOUND", "Post not Found");
+  }
+
+  @Override
+  public ServiceResponse addCategories(UUID id, UUID authorId, List<String> categoriesName) {
+    System.out.println("CATEGORIES: " + categoriesName.toString());
+    Optional<BlogPost> postFound = blogPostRepository.findById(id);
+    if(postFound.isEmpty() || postFound.get().getAuthorId() == null) {
+      return new ServiceResponse("NOT_FOUND", "Post not Found");
+    }
+    if(!postFound.get().getAuthorId().equals(authorId)) {
+      return new ServiceResponse("FORBIDDEN", "Post doesn't belong to this user");
+    }
+    List<Category> allCategories = categoryRepository.findAll();
+    System.out.println(allCategories.toString());
+    List<Category> newCategoryList = new ArrayList<>();
+    System.out.println(newCategoryList.toString());
+    for(String categoryName: categoriesName) {
+      Category categoryFound = allCategories.stream().filter(cat -> cat.getCategory().equals(categoryName)).findAny().orElse(null);
+      newCategoryList.add(categoryFound);
+    }
+    System.out.println(newCategoryList.toString());
+    postFound.get().setCategories(newCategoryList);
+    return new ServiceResponse("OK", blogPostRepository.save(postFound.get()));
   }
 }
