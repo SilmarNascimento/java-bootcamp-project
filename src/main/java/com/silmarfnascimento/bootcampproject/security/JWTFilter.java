@@ -20,30 +20,33 @@ import java.util.Optional;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
+
   @Autowired
   private IUserRepository userRepository;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+      FilterChain filterChain)
       throws ServletException, IOException {
     var servletPath = request.getServletPath();
     if (servletPath.startsWith("/users") && request.getMethod().equals("POST")) {
       filterChain.doFilter(request, response);
-    } else if(servletPath.startsWith("/auth/login") && request.getMethod().equals("POST")) {
+    } else if (servletPath.startsWith("/auth/login") && request.getMethod().equals("POST")) {
       filterChain.doFilter(request, response);
     } else {
-      String token =  request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
+      String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
       try {
-        if(token!=null && !token.isEmpty()) {
-          JWTObject tokenUserObject = JWTCreator.create(token,SecurityConfiguration.PREFIX, SecurityConfiguration.KEY);
+        if (token != null && !token.isEmpty()) {
+          JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
+              SecurityConfiguration.KEY);
           Optional<User> userFound = userRepository.findByUsername(tokenUserObject.getUsername());
 
-          if(userFound.isEmpty()) {
+          if (userFound.isEmpty()) {
             response.sendError(404, "usuário não encontrado");
             return;
           }
 
-          if(userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
+          if (userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
             request.setAttribute("idUser", userFound.get().getId());
             filterChain.doFilter(request, response);
             return;
@@ -51,12 +54,13 @@ public class JWTFilter extends OncePerRequestFilter {
 
           response.sendError(403, "usuário não autorizado");
           return;
-        }else {
+        } else {
           response.sendError(403, "Usuário não encontrado");
           return;
         }
         // filterChain.doFilter(request, response);
-      }catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException e) {
+      } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
+               SignatureException e) {
         System.out.println("Error processing JWT: " + e.getMessage());
         response.setStatus(HttpStatus.FORBIDDEN.value());
       }

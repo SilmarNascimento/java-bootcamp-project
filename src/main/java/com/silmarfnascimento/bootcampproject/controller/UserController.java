@@ -1,5 +1,8 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.silmarfnascimento.bootcampproject.model.User;
 import com.silmarfnascimento.bootcampproject.service.Implementation.UserService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
@@ -15,35 +18,43 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "UserController")
 public class UserController {
+
   @Autowired
   private UserService userService;
 
   @GetMapping
   public ResponseEntity<Object> findAllUsers() {
     ServiceResponse serviceResponse = userService.findAll();
-    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
+    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
+        .body(serviceResponse.getData());
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<Object> findUserById(UUID id) {
     ServiceResponse serviceResponse = userService.findById(id);
-    if(serviceResponse.getData() != null) {
-      return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
+    if (serviceResponse.getData() != null) {
+      return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
+          .body(serviceResponse.getData());
     }
-    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body("Cliente não encontrado");
+    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
+        .body("Cliente não encontrado");
   }
 
+  @Operation(summary = "Realiza o registro do usuário", method = "POST")
   @PostMapping
   public ResponseEntity<Object> registerUser(@RequestBody @Valid User user) {
     ServiceResponse serviceResponse = userService.create(user);
-    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
+    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
+        .body(serviceResponse.getData());
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Object> updateUser(@PathVariable UUID id, @RequestBody User user) {
     ServiceResponse serviceResponse = userService.update(id, user);
-    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
+    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
+        .body(serviceResponse.getData());
   }
 
   @DeleteMapping("/{id}")

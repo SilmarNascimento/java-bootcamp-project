@@ -1,5 +1,8 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.silmarfnascimento.bootcampproject.dto.Login;
 import com.silmarfnascimento.bootcampproject.service.Implementation.LoginService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
@@ -15,16 +18,21 @@ import static com.silmarfnascimento.bootcampproject.utils.mapHTTPStatus.mapHttpS
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "LoginController")
 public class LoginController {
+
   @Autowired
   private LoginService loginService;
 
+  @Operation(summary = "Realiza o login do usuário", method = "POST")
   @PostMapping("/login")
-  public ResponseEntity<Object> login(@RequestBody @Valid Login login){
+  public ResponseEntity<Object> login(@RequestBody @Valid Login login) {
     ServiceResponse serviceResponse = loginService.login(login);
-    if(serviceResponse.getData() != null) {
-      return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body(serviceResponse.getData());
+    if (serviceResponse.getData() != null) {
+      return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
+          .body(serviceResponse.getData());
     }
-    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus())).body("Cliente não encontrado");
+    return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
+        .body("Cliente não encontrado");
   }
 }
