@@ -24,7 +24,8 @@ public class SpringSecurityConfig {
                   .requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
               auth.anyRequest().authenticated();
             }
-        ).addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
+        )
+        .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
     return http.build();
   }
 }

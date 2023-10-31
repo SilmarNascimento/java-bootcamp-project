@@ -10,8 +10,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -43,6 +46,7 @@ public class JWTFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain)
       throws ServletException, IOException {
+    SecurityContextHolder.getContext().setAuthentication(null);
     String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
     if (token == null || token.isEmpty()) {
       response.sendError(403, "Token inválido");
@@ -60,6 +64,10 @@ public class JWTFilter extends OncePerRequestFilter {
 
       if (userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
         request.setAttribute("idUser", userFound.get().getId());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            userFound.get().getId(), null,
+            Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(authToken);
         filterChain.doFilter(request, response);
         return;
       }
