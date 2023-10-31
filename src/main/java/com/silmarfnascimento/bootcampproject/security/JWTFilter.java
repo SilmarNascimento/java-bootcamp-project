@@ -28,42 +28,34 @@ public class JWTFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain)
       throws ServletException, IOException {
-    var servletPath = request.getServletPath();
-    if (servletPath.startsWith("/users") && request.getMethod().equals("POST")) {
-      filterChain.doFilter(request, response);
-    } else if (servletPath.startsWith("/auth/login") && request.getMethod().equals("POST")) {
-      filterChain.doFilter(request, response);
-    } else {
-      String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
-      try {
-        if (token != null && !token.isEmpty()) {
-          JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
-              SecurityConfiguration.KEY);
-          Optional<User> userFound = userRepository.findByUsername(tokenUserObject.getUsername());
-
-          if (userFound.isEmpty()) {
-            response.sendError(404, "usuário não encontrado");
-            return;
-          }
-
-          if (userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
-            request.setAttribute("idUser", userFound.get().getId());
-            filterChain.doFilter(request, response);
-            return;
-          }
-
-          response.sendError(403, "usuário não autorizado");
-          return;
-        } else {
-          response.sendError(403, "Usuário não encontrado");
-          return;
-        }
-        // filterChain.doFilter(request, response);
-      } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
-               SignatureException e) {
-        System.out.println("Error processing JWT: " + e.getMessage());
-        response.setStatus(HttpStatus.FORBIDDEN.value());
-      }
+    String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
+    if (token == null || token.isEmpty()) {
+      response.sendError(403, "Token inválido");
+      return;
     }
+    try {
+      JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
+          SecurityConfiguration.KEY);
+      Optional<User> userFound = userRepository.findByUsername(tokenUserObject.getUsername());
+
+      if (userFound.isEmpty()) {
+        response.sendError(404, "usuário não encontrado");
+        return;
+      }
+
+      if (userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
+        request.setAttribute("idUser", userFound.get().getId());
+        filterChain.doFilter(request, response);
+        return;
+      }
+
+      response.sendError(403, "usuário não autorizado");
+
+    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
+             SignatureException e) {
+      System.out.println("Error processing JWT: " + e.getMessage());
+      response.setStatus(HttpStatus.FORBIDDEN.value());
+    }
+    //}
   }
 }
