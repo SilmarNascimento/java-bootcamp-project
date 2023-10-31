@@ -1,11 +1,12 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
+import com.silmarfnascimento.bootcampproject.service.IBlogPostService;
+import com.silmarfnascimento.bootcampproject.service.Implementation.BlogPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import com.silmarfnascimento.bootcampproject.dto.CategoriesName;
 import com.silmarfnascimento.bootcampproject.model.BlogPost;
-import com.silmarfnascimento.bootcampproject.service.Implementation.BlogPostService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
