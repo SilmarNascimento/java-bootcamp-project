@@ -18,12 +18,27 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Class JWTFilter - Authenticate a user based on the provided token.
+ */
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
   @Autowired
   private IUserRepository userRepository;
 
+  /**
+   * Method doFilterInternal - Implements a filter to authenticate a user based on token
+   * validation.
+   *
+   * @param request     - request http object.
+   * @param response    - responde http object.
+   * @param filterChain - object provided by the servlet  ralated to a chain of a filtered request
+   *                    for a resource.
+   * @throws ServletException - Exception thrown by servlet error.
+   * @throws IOException      - Exception thrown while accessing information using streams, files
+   *                          and directories.
+   */
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain)
@@ -56,6 +71,5 @@ public class JWTFilter extends OncePerRequestFilter {
       System.out.println("Error processing JWT: " + e.getMessage());
       response.setStatus(HttpStatus.FORBIDDEN.value());
     }
-    //}
   }
 }
