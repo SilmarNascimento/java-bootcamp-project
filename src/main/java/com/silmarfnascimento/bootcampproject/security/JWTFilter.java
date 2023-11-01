@@ -46,33 +46,39 @@ public class JWTFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain)
       throws ServletException, IOException {
+    System.out.println("filtro foi chamado");
     SecurityContextHolder.getContext().setAuthentication(null);
     String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
-    if (token == null || token.isEmpty()) {
+    System.out.println(token);
+    /*if (token == null || token.isEmpty()) {
       response.sendError(403, "Token inválido");
       return;
-    }
+    }*/
     try {
-      JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
-          SecurityConfiguration.KEY);
-      Optional<User> userFound = userRepository.findByUsername(tokenUserObject.getUsername());
+      if (token != null) {
+        JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
+            SecurityConfiguration.KEY);
+        Optional<User> userFound = userRepository.findByUsername(tokenUserObject.getUsername());
 
-      if (userFound.isEmpty()) {
-        response.sendError(404, "usuário não encontrado");
-        return;
+        if (userFound.isEmpty()) {
+          response.sendError(404, "usuário não encontrado");
+          return;
+        }
+
+        if (userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
+          request.setAttribute("idUser", userFound.get().getId());
+          UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+              userFound.get().getId(),
+              userFound.get().getPassword()
+          );
+          
+          SecurityContextHolder.getContext().setAuthentication(authToken);
+          //return;
+        }
       }
-
-      if (userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
-        request.setAttribute("idUser", userFound.get().getId());
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-            userFound.get().getId(), null,
-            Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-        filterChain.doFilter(request, response);
-        return;
-      }
-
-      response.sendError(403, "usuário não autorizado");
+      System.out.println("final do filtro");
+      filterChain.doFilter(request, response);
+      //response.sendError(403, "usuário não autorizado");
 
     } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
              SignatureException e) {

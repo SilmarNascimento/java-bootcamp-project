@@ -45,6 +45,7 @@ public class UserController {
   @Operation(summary = "Realiza o registro do usuário", method = "POST")
   @PostMapping
   public ResponseEntity<Object> registerUser(@RequestBody @Valid User user) {
+    System.out.println("user controller");
     ServiceResponse serviceResponse = userService.create(user);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
         .body(serviceResponse.getData());
