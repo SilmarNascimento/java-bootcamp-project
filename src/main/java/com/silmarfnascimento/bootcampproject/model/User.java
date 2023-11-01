@@ -6,19 +6,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import java.util.Collection;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.UUID;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @Entity(name = "tb_users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
   @Id
   @GeneratedValue(generator = "UUID")
   private UUID id;
+
+  private String name;
 
   @Column(unique = true)
   private String username;
@@ -27,7 +33,6 @@ public class User implements UserDetails {
   private String email;
 
   private String password;
-  
   private String image;
 
   @Override
