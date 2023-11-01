@@ -1,4 +1,4 @@
-package com.silmarfnascimento.bootcampproject.security;
+package com.silmarfnascimento.bootcampproject.utils;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

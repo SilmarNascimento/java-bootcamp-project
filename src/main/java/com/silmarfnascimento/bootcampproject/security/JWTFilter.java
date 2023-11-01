@@ -2,6 +2,7 @@ package com.silmarfnascimento.bootcampproject.security;
 
 import com.silmarfnascimento.bootcampproject.model.User;
 import com.silmarfnascimento.bootcampproject.repository.IUserRepository;
+import com.silmarfnascimento.bootcampproject.utils.SecurityConfiguration;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -10,7 +11,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,10 +50,6 @@ public class JWTFilter extends OncePerRequestFilter {
     SecurityContextHolder.getContext().setAuthentication(null);
     String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
     System.out.println(token);
-    /*if (token == null || token.isEmpty()) {
-      response.sendError(403, "Token inválido");
-      return;
-    }*/
     try {
       if (token != null) {
         JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
@@ -71,7 +67,7 @@ public class JWTFilter extends OncePerRequestFilter {
               userFound.get().getId(),
               userFound.get().getPassword()
           );
-          
+
           SecurityContextHolder.getContext().setAuthentication(authToken);
           //return;
         }
