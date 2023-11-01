@@ -14,16 +14,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @Entity(name = "tb_users")
-public class User extends UserDetails {
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(generator = "UUID")
   private UUID id;
+
   @Column(unique = true)
   private String username;
+
   @Column(unique = true)
   private String email;
+
   private String password;
+  
   private String image;
 
   @Override
