@@ -33,30 +33,14 @@ public class LoginService implements ILoginService {
     Optional<User> userFound = userRepository.findByUsername(login.username());
     if (userFound.isPresent()) {
       User user = userFound.get();
-      var passwordVerify = BCrypt.verifyer()
-          .verify(login.password().toCharArray(), user.getPassword());
-      if (!passwordVerify.verified) {
-        return new ServiceResponse("UNAUTHORIZED", "Invalid login or password");
-      }
-      /*
 
-       */
       UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
           login.username(),
           login.password()
       );
-      Authentication auth = authenticationManager.authenticate(authToken);
-      System.out.println(auth.getName());
-      System.out.println(auth.getPrincipal());
-      System.out.println(auth.isAuthenticated());
-      System.out.println(auth.toString());
+      authenticationManager.authenticate(authToken);
 
-      JWTObject jwtObject = new JWTObject(
-          user.getUsername(),
-          user.getPassword()
-      );
-      jwtObject.setUsername(user.getUsername());
-      jwtObject.setPassword(user.getPassword());
+      JWTObject jwtObject = new JWTObject(user.getUsername(), user.getPassword());
 
       Session session = new Session(
           user.getUsername(),
