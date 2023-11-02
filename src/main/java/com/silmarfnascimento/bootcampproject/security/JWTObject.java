@@ -9,13 +9,11 @@ import java.util.Date;
 public class JWTObject {
 
   private String username;
-  private String password;
   private Date createdAt;
   private Date expiresAt;
 
-  public JWTObject(String username, String password) {
+  public JWTObject(String username) {
     this.username = username;
-    this.password = password;
     this.createdAt = new Date(System.currentTimeMillis());
     this.expiresAt = new Date(System.currentTimeMillis() + SecurityConfiguration.EXPIRATION);
   }

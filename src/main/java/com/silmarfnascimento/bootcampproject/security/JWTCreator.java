@@ -9,7 +9,6 @@ public class JWTCreator {
   public static String create(String prefix, String key, JWTObject jwtObject) {
     String token = Jwts.builder()
         .setSubject(jwtObject.getUsername())
-        .claim("password", jwtObject.getPassword())
         .setIssuedAt(jwtObject.getCreatedAt())
         .setExpiration(jwtObject.getExpiresAt())
         .signWith(SignatureAlgorithm.HS256, key)
@@ -22,7 +21,7 @@ public class JWTCreator {
     String token = authToken.replace(prefix, "").trim();
     Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 
-    JWTObject object = new JWTObject(claims.getSubject(), claims.get("password", String.class));
+    JWTObject object = new JWTObject(claims.getSubject());
     object.setExpiresAt(claims.getExpiration());
     object.setCreatedAt(claims.getIssuedAt());
     return object;

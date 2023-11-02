@@ -40,7 +40,7 @@ public class LoginService implements ILoginService {
       );
       authenticationManager.authenticate(authToken);
 
-      JWTObject jwtObject = new JWTObject(user.getUsername(), user.getPassword());
+      JWTObject jwtObject = new JWTObject(user.getUsername());
 
       Session session = new Session(
           user.getUsername(),
