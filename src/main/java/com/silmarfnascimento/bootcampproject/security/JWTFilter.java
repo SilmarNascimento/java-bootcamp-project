@@ -43,10 +43,11 @@ public class JWTFilter extends OncePerRequestFilter {
    *                          and directories.
    */
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-      FilterChain filterChain)
-      throws ServletException, IOException {
-    System.out.println("filtro foi chamado");
+  protected void doFilterInternal(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain filterChain
+  ) throws ServletException, IOException {
     SecurityContextHolder.getContext().setAuthentication(null);
     String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
     System.out.println(token);
@@ -67,14 +68,11 @@ public class JWTFilter extends OncePerRequestFilter {
               userFound.get().getId(),
               userFound.get().getPassword()
           );
-
           SecurityContextHolder.getContext().setAuthentication(authToken);
-          //return;
         }
       }
       System.out.println("final do filtro");
       filterChain.doFilter(request, response);
-      //response.sendError(403, "usuário não autorizado");
 
     } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
              SignatureException e) {

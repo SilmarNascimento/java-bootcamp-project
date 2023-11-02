@@ -44,7 +44,7 @@ public class SpringSecurityConfig {
         )
         .authorizeHttpRequests(auth -> {
           auth
-              .requestMatchers(mvc.pattern(HttpMethod.POST, "/users/")).permitAll()
+              .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
               .requestMatchers(mvc.pattern(HttpMethod.POST, "/auth/login")).permitAll();
           auth.anyRequest().authenticated();
         })

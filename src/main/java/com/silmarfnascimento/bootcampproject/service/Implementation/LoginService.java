@@ -39,8 +39,10 @@ public class LoginService implements ILoginService {
       jwtObject.setExpiresAt(
           (new Date(System.currentTimeMillis() + SecurityConfiguration.EXPIRATION)));
 
-      Session session = new Session(user.getUsername(),
-          JWTCreator.create(SecurityConfiguration.PREFIX, SecurityConfiguration.KEY, jwtObject));
+      Session session = new Session(
+          user.getUsername(),
+          JWTCreator.create(SecurityConfiguration.PREFIX, SecurityConfiguration.KEY, jwtObject)
+      );
 
       return new ServiceResponse("OK", session);
     } else {
