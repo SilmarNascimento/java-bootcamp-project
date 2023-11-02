@@ -2,6 +2,7 @@ package com.silmarfnascimento.bootcampproject.security;
 
 import com.silmarfnascimento.bootcampproject.model.User;
 import com.silmarfnascimento.bootcampproject.repository.IUserRepository;
+import com.silmarfnascimento.bootcampproject.service.IUserService;
 import com.silmarfnascimento.bootcampproject.utils.SecurityConfiguration;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,7 +31,7 @@ import java.util.Optional;
 public class JWTFilter extends OncePerRequestFilter {
 
   @Autowired
-  private IUserRepository userRepository;
+  private UserDetailsService userService;
 
   /**
    * Method doFilterInternal - Implements a filter to authenticate a user based on token
@@ -55,21 +58,18 @@ public class JWTFilter extends OncePerRequestFilter {
       if (token != null) {
         JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
             SecurityConfiguration.KEY);
-        Optional<User> userFound = userRepository.findByUsername(tokenUserObject.getUsername());
+        User userFound = (User) userService.loadUserByUsername(tokenUserObject.getUsername());
 
-        if (userFound.isEmpty()) {
-          response.sendError(404, "usuário não encontrado");
-          return;
-        }
+        System.out.println(userFound.toString());
 
-        if (userFound.get().getPassword().equals(tokenUserObject.getPassword())) {
-          request.setAttribute("idUser", userFound.get().getId());
-          UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-              userFound.get().getId(),
-              userFound.get().getPassword()
-          );
-          SecurityContextHolder.getContext().setAuthentication(authToken);
-        }
+        request.setAttribute("idUser", userFound.getId());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            userFound.getUsername(),
+            null,
+            userFound.getAuthorities()
+        );
+        System.out.println(authToken.toString());
+        SecurityContextHolder.getContext().setAuthentication(authToken);
       }
       System.out.println("final do filtro");
       filterChain.doFilter(request, response);

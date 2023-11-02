@@ -30,6 +30,7 @@ public class BlogPostController {
 
   @GetMapping
   public ResponseEntity<Object> findAllBlogPosts() {
+    System.out.println("entrei get posts");
     ServiceResponse serviceResponse = blogPostService.findAll();
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
         .body(serviceResponse.getData());
