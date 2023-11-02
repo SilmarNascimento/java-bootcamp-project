@@ -49,8 +49,10 @@ public class BlogPostController {
 
   @Operation(summary = "Realiza o registro do usuário", method = "POST")
   @PostMapping
-  public ResponseEntity<Object> createBlogPost(HttpServletRequest request,
-      @RequestBody @Valid BlogPost post) {
+  public ResponseEntity<Object> createBlogPost(
+      HttpServletRequest request,
+      @RequestBody @Valid BlogPost post
+  ) {
     UUID authorId = (UUID) request.getAttribute("idUser");
     ServiceResponse serviceResponse = blogPostService.create(authorId, post);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
@@ -67,8 +69,11 @@ public class BlogPostController {
   }
 
   @PutMapping("/{id}/category")
-  public ResponseEntity<Object> updateBlogPostCategory(HttpServletRequest request,
-      @PathVariable UUID id, @RequestBody CategoriesName categoriesName) {
+  public ResponseEntity<Object> updateBlogPostCategory(
+      HttpServletRequest request,
+      @PathVariable UUID id,
+      @RequestBody CategoriesName categoriesName
+  ) {
     UUID authorId = (UUID) request.getAttribute("idUser");
     List<String> categoryNameList = categoriesName.categories();
     ServiceResponse serviceResponse = blogPostService.addCategories(id, authorId, categoryNameList);
