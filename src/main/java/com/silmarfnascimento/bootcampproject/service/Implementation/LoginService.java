@@ -11,6 +11,9 @@ import com.silmarfnascimento.bootcampproject.utils.SecurityConfiguration;
 import com.silmarfnascimento.bootcampproject.service.ILoginService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,7 +25,11 @@ public class LoginService implements ILoginService {
   @Autowired
   private IUserRepository userRepository;
 
+  @Autowired
+  private AuthenticationManager authenticationManager;
+
   public ServiceResponse login(Login login) {
+    System.out.println("entrei loginService");
     Optional<User> userFound = userRepository.findByUsername(login.username());
     if (userFound.isPresent()) {
       User user = userFound.get();
@@ -31,13 +38,25 @@ public class LoginService implements ILoginService {
       if (!passwordVerify.verified) {
         return new ServiceResponse("UNAUTHORIZED", "Invalid login or password");
       }
+      /*
 
-      JWTObject jwtObject = new JWTObject();
+       */
+      UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+          login.username(),
+          login.password()
+      );
+      Authentication auth = authenticationManager.authenticate(authToken);
+      System.out.println(auth.getName());
+      System.out.println(auth.getPrincipal());
+      System.out.println(auth.isAuthenticated());
+      System.out.println(auth.toString());
+
+      JWTObject jwtObject = new JWTObject(
+          user.getUsername(),
+          user.getPassword()
+      );
       jwtObject.setUsername(user.getUsername());
       jwtObject.setPassword(user.getPassword());
-      jwtObject.setCreatedAt(new Date(System.currentTimeMillis()));
-      jwtObject.setExpiresAt(
-          (new Date(System.currentTimeMillis() + SecurityConfiguration.EXPIRATION)));
 
       Session session = new Session(
           user.getUsername(),
