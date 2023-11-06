@@ -16,8 +16,10 @@ public class JWTCreator {
     return prefix + " " + token;
   }
 
-  public static JWTObject create(String authToken, String prefix, String key)
-      throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException {
+  public static JWTObject create(
+      String authToken,
+      String prefix, String key
+  ) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException {
     String token = authToken.replace(prefix, "").trim();
     Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 

@@ -53,14 +53,11 @@ public class JWTFilter extends OncePerRequestFilter {
   ) throws ServletException, IOException {
     SecurityContextHolder.getContext().setAuthentication(null);
     String token = request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
-    System.out.println(token);
     try {
       if (token != null) {
         JWTObject tokenUserObject = JWTCreator.create(token, SecurityConfiguration.PREFIX,
             SecurityConfiguration.KEY);
         User userFound = (User) userService.loadUserByUsername(tokenUserObject.getUsername());
-
-        System.out.println(userFound.toString());
 
         request.setAttribute("idUser", userFound.getId());
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -68,10 +65,8 @@ public class JWTFilter extends OncePerRequestFilter {
             null,
             userFound.getAuthorities()
         );
-        System.out.println(authToken.toString());
         SecurityContextHolder.getContext().setAuthentication(authToken);
       }
-      System.out.println("final do filtro");
       filterChain.doFilter(request, response);
 
     } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |

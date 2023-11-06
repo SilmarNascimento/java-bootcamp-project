@@ -52,7 +52,8 @@ public class SpringSecurityConfig {
         .authorizeHttpRequests(auth -> {
           auth
               .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
-              .requestMatchers(mvc.pattern(HttpMethod.POST, "/auth/login")).permitAll();
+              .requestMatchers(mvc.pattern(HttpMethod.POST, "/auth/login")).permitAll()
+              .requestMatchers(mvc.pattern("/swagger-ui/index.html")).permitAll();
           auth.anyRequest().authenticated();
         })
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

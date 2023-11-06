@@ -29,7 +29,6 @@ public class LoginService implements ILoginService {
   private AuthenticationManager authenticationManager;
 
   public ServiceResponse login(Login login) {
-    System.out.println("entrei loginService");
     Optional<User> userFound = userRepository.findByUsername(login.username());
     if (userFound.isPresent()) {
       User user = userFound.get();
