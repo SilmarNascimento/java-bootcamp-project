@@ -24,6 +24,12 @@ public class SpringSecurityConfig {
   @Autowired
   private JWTFilter jwtFilter;
 
+  private static final String[] SWAGGER_LIST = {
+      "/swagger-ui/**",
+      "/v3/api-docs/**",
+      "/swagger-resources/**"
+  };
+
   @Bean
   MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
     return new MvcRequestMatcher.Builder(introspector);
@@ -53,7 +59,7 @@ public class SpringSecurityConfig {
           auth
               .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
               .requestMatchers(mvc.pattern(HttpMethod.POST, "/auth/login")).permitAll()
-              .requestMatchers(mvc.pattern("/swagger-ui/index.html")).permitAll();
+              .requestMatchers(SWAGGER_LIST).permitAll();
           auth.anyRequest().authenticated();
         })
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
