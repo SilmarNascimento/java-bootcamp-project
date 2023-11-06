@@ -1,5 +1,6 @@
 package com.silmarfnascimento.bootcampproject.controller;
 
+import com.silmarfnascimento.bootcampproject.dto.UserRegister;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -44,8 +45,13 @@ public class UserController {
 
   @Operation(summary = "Realiza o registro do usuário", method = "POST")
   @PostMapping
-  public ResponseEntity<Object> registerUser(@RequestBody @Valid User user) {
-    System.out.println("user controller");
+  public ResponseEntity<Object> registerUser(@RequestBody @Valid UserRegister userRegister) {
+    User user = new User(
+        userRegister.name(),
+        userRegister.username(),
+        userRegister.email(),
+        userRegister.password(),
+        userRegister.image());
     ServiceResponse serviceResponse = userService.create(user);
     return ResponseEntity.status(mapHttpStatus(serviceResponse.getStatus()))
         .body(serviceResponse.getData());

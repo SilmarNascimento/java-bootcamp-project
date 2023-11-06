@@ -15,9 +15,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
-@Entity(name = "tb_users")
+@Entity(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
 public class User implements UserDetails {
 
   @Id
@@ -34,6 +33,14 @@ public class User implements UserDetails {
 
   private String password;
   private String image;
+
+  public User(String name, String username, String email, String password, String image) {
+    this.name = name;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.image = image;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
