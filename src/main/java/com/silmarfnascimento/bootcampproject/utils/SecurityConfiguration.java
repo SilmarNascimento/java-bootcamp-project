@@ -1,4 +1,4 @@
-package com.silmarfnascimento.bootcampproject.security;
+package com.silmarfnascimento.bootcampproject.utils;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,12 +9,13 @@ import org.springframework.stereotype.Component;
 @Configuration
 @Component
 public class SecurityConfiguration {
-  @Value("${security.config.prefix}")
+
+  //@Value("${security.config.prefix}")
   public static String PREFIX = "Bearer";
 
-  @Value("${security.config.key}")
+  //@Value("${security.config.key}")
   public static String KEY = "SECRET_KEY";
 
-  @Value("${security.config.expiration}")
+  //@Value("${security.config.expiration}")
   public static Long EXPIRATION = 3600000L;
 }

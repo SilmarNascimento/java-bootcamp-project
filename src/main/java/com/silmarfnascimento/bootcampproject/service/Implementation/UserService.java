@@ -7,6 +7,9 @@ import com.silmarfnascimento.bootcampproject.service.IUserService;
 import com.silmarfnascimento.bootcampproject.service.ServiceResponse;
 import com.silmarfnascimento.bootcampproject.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +17,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements IUserService, UserDetailsService {
+
   @Autowired
   private IUserRepository userRepository;
 
@@ -27,7 +31,7 @@ public class UserService implements IUserService {
   @Override
   public ServiceResponse findById(UUID id) {
     Optional<User> user = userRepository.findById(id);
-    if(user.isEmpty()) {
+    if (user.isEmpty()) {
       return new ServiceResponse("NOT_FOUND", "User not Found");
     }
     return new ServiceResponse("OK", user);
@@ -51,8 +55,9 @@ public class UserService implements IUserService {
       return new ServiceResponse("NOT_FOUND", "User not Found");
     }
 
-    var passwordVerify = BCrypt.verifyer().verify(user.getPassword().toCharArray(), userFound.get().getPassword());
-    if(!passwordVerify.verified) {
+    var passwordVerify = BCrypt.verifyer()
+        .verify(user.getPassword().toCharArray(), userFound.get().getPassword());
+    if (!passwordVerify.verified) {
       hashUserPassword(user);
     }
 
@@ -75,5 +80,10 @@ public class UserService implements IUserService {
     String passwordHashed = BCrypt.withDefaults()
         .hashToString(12, user.getPassword().toCharArray());
     user.setPassword(passwordHashed);
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByUsername(username).get();
   }
 }
